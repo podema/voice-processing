@@ -1,0 +1,71 @@
+
+Install gcc, g++, sox
+
+Put the prj folder with a path without 'spaces':
+/home/toni/lab/prj --> OK
+/home/toni/lab work/prj --> NOT OK
+
+Open a terminal, go to prj, execute make. 
+
+Put the prj folder with a path without 'spaces':
+/home/toni/lab/prj --> OK
+/home/toni/lab work/prj --> NOT OK
+
+Open a terminal, go to prj, execute make. 
+The 'make' program makes things according to the instructions found in the 
+'makefile' file.
+
+$ make all
+
+It is better to include your path in the PATH environment:
+
+$ gedit $HOME/.bashrc
+PAV=/home/toni/lab/bin/release
+export PATH=".:$PAV:$PATH"
+
+$ source $HOME/.bashrc
+
+Foreach program:
+1. Create a directory
+2. Put in that directory all the .c, .cpp, .h that you want. 
+   You can put the .h in the include (specially if you create libraries 
+   to be used by other programs)
+3. Create the makefile. You can do it using the script, 
+   $ make_wizard -p1
+   This script creates a makefile than indicates to the 'make' that 
+   - all the files in the directory need to be compiled
+   - math library and libpav library is included during the link
+   - the name of the output program is the name of the directory
+
+5. Compile: 
+   $ make debug
+or
+   $ make release
+
+If you want to compile this dir from the generic dir (prj) open the
+makefile (in prj folder) and add the directory.
+
+The executable files are in the folder bin/debug or bin/release
+
+
+
+Install SPTK:  Speech Signal Processing Toolkit (SPTK):
+In http://sp-tk.sourceforge.net/ you can find documentation and examples for
+using this toolkit.
+
+Download, uncompress, configure, install
+
+	  $ wget http://downloads.sourceforge.net/sp-tk/SPTK-3.6.tar.gz
+	  $ tar zxvf SPTK-3.6.tar.gz 
+	  $ cd SPTK-3.6
+	  $ ./configure --prefix=$PWD/../sptk
+	  $ make
+	  $ make install 
+
+Add the directory with the SPTK tools (look for it at $PWD/../sptk) 
+to the path in your bashrc file:
+ 
+$ gedit $HOME/.bashrc
+SPTK=/home/toni/...    <-- add directory/home/toni/lab/bin/release
+export PATH=".:$PAV:$SPTK:$PATH"
+

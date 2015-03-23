@@ -1,0 +1,65 @@
+make -C make_wizard release
+make[1]: se ingresa al directorio «/home/pol/prj/make_wizard»
+ 
+ 
+==============================================================
+Make release from /home/pol/intermediate/make_wizard/release
+--------------------------------------------------------------
+make   -C /home/pol/intermediate/make_wizard/release -f /home/pol/prj/make_wizard/makefile
+make[2]: se ingresa al directorio «/home/pol/intermediate/make_wizard/release»
+make[2]: No se hace nada para «all».
+make[2]: se sale del directorio «/home/pol/intermediate/make_wizard/release»
+ 
+make[1]: se sale del directorio «/home/pol/prj/make_wizard»
+make -C pav release
+make[1]: se ingresa al directorio «/home/pol/prj/pav»
+ 
+ 
+==============================================================
+Make release from /home/pol/intermediate/pav/release
+--------------------------------------------------------------
+make   -C /home/pol/intermediate/pav/release -f /home/pol/prj/pav/makefile
+make[2]: se ingresa al directorio «/home/pol/intermediate/pav/release»
+make[2]: No se hace nada para «all».
+make[2]: se sale del directorio «/home/pol/intermediate/pav/release»
+ 
+make[1]: se sale del directorio «/home/pol/prj/pav»
+make -C derivates release
+make[1]: se ingresa al directorio «/home/pol/prj/derivates»
+ 
+ 
+==============================================================
+Make release from /home/pol/intermediate/derivates/release
+--------------------------------------------------------------
+make   -C /home/pol/intermediate/derivates/release -f /home/pol/prj/derivates/makefile
+make[2]: se ingresa al directorio «/home/pol/intermediate/derivates/release»
+make[2]: No se hace nada para «all».
+make[2]: se sale del directorio «/home/pol/intermediate/derivates/release»
+ 
+make[1]: se sale del directorio «/home/pol/prj/derivates»
+make -C gmm release
+make[1]: se ingresa al directorio «/home/pol/prj/gmm»
+ 
+ 
+==============================================================
+Make release from /home/pol/intermediate/gmm/release
+--------------------------------------------------------------
+make   -C /home/pol/intermediate/gmm/release -f /home/pol/prj/gmm/makefile
+make[2]: se ingresa al directorio «/home/pol/intermediate/gmm/release»
+make[2]: No se hace nada para «all».
+make[2]: se sale del directorio «/home/pol/intermediate/gmm/release»
+ 
+make[1]: se sale del directorio «/home/pol/prj/gmm»
+make -C scripts release
+make[1]: se ingresa al directorio «/home/pol/prj/scripts»
+ 
+ 
+==============================================================
+Make release from /home/pol/intermediate/scripts/release
+--------------------------------------------------------------
+make   -C /home/pol/intermediate/scripts/release -f /home/pol/prj/scripts/makefile
+make[2]: se ingresa al directorio «/home/pol/intermediate/scripts/release»
+make[2]: No se hace nada para «all».
+make[2]: se sale del directorio «/home/pol/intermediate/scripts/release»
+ 
+make[1]: se sale del directorio «/home/pol/prj/scripts»

@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{graphicx}
+\title{GMM per al processat de veu}
+\author{Pol Delgado Martin\\Daniel Villaplana Gomez }
+\date{May 2014}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducció}
+Les GMM ens permeten estimar la densitat de probabilitat, son una eina molt potentja que mitjançant un corpus de entrenament permeten entrenarles mitjançant un algoritme iteratiu com ho es el de expectation-maximitzation. 
+\\Així doncs si seleccionem bé les dades de entrenament podem crear classificadors molt potents , sent alhora computacionalment eficients, donat que nomes hem de calcular la probabilitat de que la nostre caracteristica pertanyi a un dels nostres models.
+\\\\En aquest projecte farem servir les GMM per a la classificació de locutor, es a dir dir a qui pertany una grabació donat un senyal (o al menys a qui es probable que pertanyi).
+\\També usarem aquesta eina per a la verificació de veu, es a dir identificar a un usuari mitjançant unicament una grabació.
+\section{Analisis}
+Per a la correcta implementació dels nostres proposits hem implementat una classe GMM, a més hem creat tambe les funcions gmm\_classify i gmm\_verify.
+\\\\gmm\_classify ens permet a partir de unes dades i un array de GMM (els nostres locutors) dir probablement de qui és la grabació.
+\\\\gmm\_verify ens permet a partir de unes dades i un array de GMM identificar un locutor,la diferencia principal entre classify i verify és que en verificació no podem només donar la opcio més probable, un intrus es inaceptable, aixi doncs creem una gmm background , un model del conjunt de locutors, i la comparem amb un treshold, aixi doncs un locutor no només ha de semblarse a ell mateix sino que ha de ser identificable, distingirse del conjunt de parlants.
+\\\\Per a la extracció de caracteristiques dels audios farem servir el SPTK, un conjunts de programes per al processat de veu, que conté funcions com la de calcular els mpcc els lpcc o enfinestraments.
+\\\\A més a fi de probar i dissenyar el nostre sistema ens caldra un conjunt de audios prou ampli com per modelar un cas real, farem servir la base de dades speecon.
+\\\\\\\\Així doncs hem realitzat les seguents tasques:
+\begin{itemize}
+    \item Completar la classe GMM
+    \item Completar la funció gmm\_train , que és una implementacio del algoritme Expectation-Maximization per a entrenar les GMM.
+    \item finalitzar la funció gmm\_classify, que ens permetra decidir entre els locutors.
+    \item S'analitzarà l'importància dels paràmetres.
+    \begin{itemize}
+         \item Mètodes d'inicialització.
+         \item Nombre de Gaussianes.
+         \item lpcc i mpc.
+    \end{itemize}
+    \item Utilitzarem programació bash o els scripts per a processos complexes i repetitius.
+\end{itemize}
+\section{Síntesis}
+\subsection{gmm.cpp}
+\lstinputlisting[language=c,breaklines=true]{/home/pol/Documents/uni/pav/projecte/prj/gmm/gmm.cpp}
+\subsection{gmm\_classify.cpp}
+\lstinputlisting[language=c,breaklines=true]{/home/pol/Documents/uni/pav/projecte/prj/gmm/gmm_classify.cpp}
+\subsection{gmm\_train.cpp}
+\lstinputlisting[language=c,breaklines=true]{/home/pol/Documents/uni/pav/projecte/prj/gmm/gmm_train.cpp}
+\subsection{gmm\_verify.cpp}
+\lstinputlisting[language=c,breaklines=true]{/home/pol/Documents/uni/pav/projecte/prj/gmm/gmm_verify.cpp}
+\subsection{run\_spkid}
+El script run\_spkid.sh ens permetra avaluar el nostre projecte.
+\begin{itemize}
+\item la opció \textbf{lists} selecciona una part dels fitxers dels fitxers de la base de dades per a entrenament i en reserva una altre part per a la avaluació del sistema.
+\item la opció \textbf{mcp} computa el vector de caracteristiques de tots els audios de la base de dades, lpcc o mpcc.
+\item la opció \textbf{gmm\_mcp} entrena una gmm per a cada locutor de la base de dades.
+\item la opció \textbf{background} entrena una gmm amb tots els locutors de la base de dades.
+\item la opció \textbf{test\_mcp} testeja el nostre sistema mitjançant els audis que ens haviem reservat.
+\item la opció \textbf{verify} fa un test de verificació de locutors. 
+\end{itemize}
+\lstinputlisting[language=sh,breaklines=true]{/home/pol/Documents/uni/pav/projecte/prj/scripts/run_spkid.sh}
+\newpage
+\section{Conclusions}
+En el apartat de classificació de locutor el nostre sistema ha estat clarament un exit,hem apreciat una millora en el nostre sistema al usar mel frequency cepstrums.
+En les nostres proves hem vist que el nombre de coeficients optim era de 13, mes enllà no hem vist una millora significativa. A més hem suposat que cada coeficient tindria una variança associada i per tant una única gaussiana, suposit que mes tard hem vist que era erroni, sent un parametre clau del sistema.
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.3]{lpc}
+    \caption{eficacia del sistema amb coeficients lpc}
+  \end{center}
+\end{figure}
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.3]{mpc}
+    \caption{eficacia del sistema amb coeficients mpc}
+  \end{center}
+\end{figure}
+\\\\\\En quant a la verficació hem obtingut els seguents resultats:
+\begin{verbatim}
+=======================================
+THR: 5.35862779999998
+Missed:     343/374=0.9171
+FalseAlarm: 0/11981=0.0000
+----------------------------------------------
+==> CostDetection: 91
+=======================================
+\end{verbatim}
+Els resultats en aquesta aplicació no son tant bons, no obstant aixo es causat en part per la curta llongitud dels audios de verificació, molt més curts que en els que hem fet servir per classificació.
+\\De totes maneres podriem millorar el sistema inicialitzant les gaussianes amb el model de background en comptes de amb vq, ja que d'aquesta manera es té en compte el model de background en cada una de les gmm i els usuaris legitims en surten beneficiats.
+\\Descartem el ús de cadenes de markov per  aquesta aplicació, no obstant podriem fer servir un model més sofisticat que permetin un corpus de entrenament mes elevat, com poden ser les xarxes neuronals.
+\end{document}

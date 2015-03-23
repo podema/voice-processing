@@ -1,0 +1,57 @@
+#include <vector>
+#include <string>
+#include <fstream>
+#include "digital_filter.h"
+#include "wavmonopcm.h"
+
+using namespace upc;
+using namespace std;
+
+
+const float A=300;
+
+const float frame_dur = 0.3;
+#define nf0 3
+const float f0[nf0] = {85,85,0}; 
+const float pitch_factor = 1;
+
+int main(int argc, char **argv) {
+  DigitalFilter F1, F2;
+  float rate=16000.0F;
+  vector<float> x;
+  vector<float> y;
+  
+  /* Create excitation  in x*/
+
+  /* Create resonator F1 and F2: set_resonator, set_gain */
+
+  /* save spectrum info to check output */
+    {//Compute and Write spectrum
+      vector<float> section_spectrum, total_spectrum;
+      vector<float> freqs(1000), freqsA(1000);
+      float delta = 5000.0F/(freqs.size()-1);
+      unsigned int i;
+      float f;
+      for (i=0, f=0; i<freqs.size(); i++, f+=delta){
+	freqsA[i] = f/1000.0F; //analogic freq. in kHz (to print out)
+	freqs[i] = f/rate; //discrete freq. values where spectrum is computed
+      }
+      total_spectrum = F1.freqz(freqs);
+      section_spectrum = F2.freqz(freqs);
+      for (i=0; i<total_spectrum.size(); ++i)
+	total_spectrum[i] += section_spectrum[i];
+
+      ofstream os("vowels.txt");
+      for (i=0; i<total_spectrum.size(); ++i)
+	os << freqsA[i] << '\t' << total_spectrum[i] << '\n';
+    }      
+
+
+  /* Filter x => F1(x) => y = F2(F1(x)) */
+
+
+  /* Save wav file */
+  
+  return wavmonopcm_write("vowels.wav", y, rate);
+}
+
